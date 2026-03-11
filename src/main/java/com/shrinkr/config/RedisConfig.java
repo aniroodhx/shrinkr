@@ -14,14 +14,14 @@ import java.net.URI;
 @Configuration
 public class RedisConfig {
 
-    @Value("${SPRING_DATA_REDIS_URL:redis://localhost:6379}")
+    @Value("${REDIS_URL:redis://localhost:6379}")
     private String redisUrl;
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() throws Exception {
         URI uri = new URI(redisUrl);
         String host = uri.getHost();
-        int port = uri.getPort();
+        int port = uri.getPort() == -1 ? 6379 : uri.getPort();
         String userInfo = uri.getUserInfo();
 
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(host, port);
